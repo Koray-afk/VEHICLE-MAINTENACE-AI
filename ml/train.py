@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
 import joblib
 import os
@@ -14,10 +15,12 @@ def load_processed_data(data_dir):
     y_train = pd.read_csv(os.path.join(data_dir, 'y_train.csv')).values.ravel()
     y_test = pd.read_csv(os.path.join(data_dir, 'y_test.csv')).values.ravel()
     
+    
     return X_train, X_test, y_train, y_test
 
 
 def train_logistic_regression(X_train, y_train):
+
     
     lr_model = LogisticRegression(
         max_iter=1000,
@@ -30,6 +33,23 @@ def train_logistic_regression(X_train, y_train):
     print(f"Training Accuracy: {train_acc:.4f}")
     
     return lr_model
+
+
+def train_decision_tree(X_train, y_train):
+
+    
+    dt_model = DecisionTreeClassifier(
+        max_depth=5,
+        min_samples_split=50,
+        min_samples_leaf=25,
+        random_state=42
+    )
+    dt_model.fit(X_train, y_train)
+    
+    train_acc = accuracy_score(y_train, dt_model.predict(X_train))
+    print(f"Training Accuracy: {train_acc:.4f}")
+    
+    return dt_model
 
 
 def save_model(model, filepath):
@@ -47,9 +67,18 @@ if __name__ == "__main__":
     
     # logistic regression
     lr_model = train_logistic_regression(X_train, y_train)
-    
-    test_acc = accuracy_score(y_test, lr_model.predict(X_test))
-    print(f"Test Accuracy: {test_acc:.4f}")
-    
+    lr_test_acc = accuracy_score(y_test, lr_model.predict(X_test))
+    print(f"Test Accuracy: {lr_test_acc:.4f}")
     save_model(lr_model, os.path.join(models_dir, "logistic_regression.pkl"))
     
+    # decision tree
+    dt_model = train_decision_tree(X_train, y_train)
+    dt_test_acc = accuracy_score(y_test, dt_model.predict(X_test))
+    print(f"Test Accuracy: {dt_test_acc:.4f}")
+    save_model(dt_model, os.path.join(models_dir, "decision_tree.pkl"))
+    
+    # comparison
+ 
+    print(f"Logistic Regression - Test Accuracy: {lr_test_acc:.4f}")
+    print(f"Decision Tree       - Test Accuracy: {dt_test_acc:.4f}")
+   
