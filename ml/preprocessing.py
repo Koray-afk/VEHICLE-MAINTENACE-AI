@@ -60,4 +60,3 @@ if __name__ == "__main__":
     output_dir = os.path.join(base_dir, "data", "processed")
     
     X_train, X_test, y_train, y_test = preprocess_pipeline(input_path, output_dir)
-    print("\nPreprocessing complete!")

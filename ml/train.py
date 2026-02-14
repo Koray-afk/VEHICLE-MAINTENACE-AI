@@ -39,9 +39,10 @@ def train_decision_tree(X_train, y_train):
 
     
     dt_model = DecisionTreeClassifier(
-        max_depth=5,
-        min_samples_split=50,
-        min_samples_leaf=25,
+        max_depth=4,
+        min_samples_split=500,
+        min_samples_leaf=200,
+        ccp_alpha=0.005,
         random_state=42
     )
     dt_model.fit(X_train, y_train)
@@ -77,8 +78,15 @@ if __name__ == "__main__":
     print(f"Test Accuracy: {dt_test_acc:.4f}")
     save_model(dt_model, os.path.join(models_dir, "decision_tree.pkl"))
     
+    # feature importance check
+    feature_names = X_train.columns
+    importances = dt_model.feature_importances_
+    feat_imp = sorted(zip(feature_names, importances), key=lambda x: x[1], reverse=True)
+    for name, imp in feat_imp:
+        if imp > 0:
+            print(f"  {name}: {imp:.4f}")
+    
     # comparison
- 
     print(f"Logistic Regression - Test Accuracy: {lr_test_acc:.4f}")
     print(f"Decision Tree       - Test Accuracy: {dt_test_acc:.4f}")
-   
+
