@@ -1,0 +1,55 @@
+import pandas as pd
+import numpy as np
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+import joblib
+import os
+import warnings
+warnings.filterwarnings('ignore')
+
+
+def load_processed_data(data_dir):
+    X_train = pd.read_csv(os.path.join(data_dir, 'X_train.csv'))
+    X_test = pd.read_csv(os.path.join(data_dir, 'X_test.csv'))
+    y_train = pd.read_csv(os.path.join(data_dir, 'y_train.csv')).values.ravel()
+    y_test = pd.read_csv(os.path.join(data_dir, 'y_test.csv')).values.ravel()
+    
+    return X_train, X_test, y_train, y_test
+
+
+def train_logistic_regression(X_train, y_train):
+    
+    lr_model = LogisticRegression(
+        max_iter=1000,
+        random_state=42,
+        solver='lbfgs'
+    )
+    lr_model.fit(X_train, y_train)
+    
+    train_acc = accuracy_score(y_train, lr_model.predict(X_train))
+    print(f"Training Accuracy: {train_acc:.4f}")
+    
+    return lr_model
+
+
+def save_model(model, filepath):
+    os.makedirs(os.path.dirname(filepath), exist_ok=True)
+    joblib.dump(model, filepath)
+    print(f"Model saved to {filepath}")
+
+
+if __name__ == "__main__":
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    data_dir = os.path.join(base_dir, "data", "processed")
+    models_dir = os.path.join(base_dir, "models")
+    
+    X_train, X_test, y_train, y_test = load_processed_data(data_dir)
+    
+    # logistic regression
+    lr_model = train_logistic_regression(X_train, y_train)
+    
+    test_acc = accuracy_score(y_test, lr_model.predict(X_test))
+    print(f"Test Accuracy: {test_acc:.4f}")
+    
+    save_model(lr_model, os.path.join(models_dir, "logistic_regression.pkl"))
+    
