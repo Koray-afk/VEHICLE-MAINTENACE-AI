@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LogisticRegression
@@ -72,6 +73,7 @@ if __name__ == "__main__":
     print(f"Test Accuracy: {lr_test_acc:.4f}")
     save_model(lr_model, os.path.join(models_dir, "logistic_regression.pkl"))
     
+<<<<<<< HEAD
     # decision tree
     dt_model = train_decision_tree(X_train, y_train)
     dt_test_acc = accuracy_score(y_test, dt_model.predict(X_test))
@@ -90,3 +92,31 @@ if __name__ == "__main__":
     print(f"Logistic Regression - Test Accuracy: {lr_test_acc:.4f}")
     print(f"Decision Tree       - Test Accuracy: {dt_test_acc:.4f}")
 
+=======
+=======
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.pipeline import Pipeline
+
+def train_models(X_train, y_train, preprocessor):
+    """
+    Trains Logistic Regression and Decision Tree models using the preprocessor.
+    """
+    models = {
+        "Logistic Regression": LogisticRegression(random_state=42, max_iter=1000),
+        "Decision Tree": DecisionTreeClassifier(random_state=42)
+    }
+    
+    trained_pipelines = {}
+    
+    for name, model in models.items():
+        pipeline = Pipeline(steps=[
+            ('preprocessor', preprocessor),
+            ('classifier', model)
+        ])
+        pipeline.fit(X_train, y_train)
+        trained_pipelines[name] = pipeline
+        
+    return trained_pipelines
+>>>>>>> 34144b8 (train the model)
+>>>>>>> c868f44e5d3ee6b6cfa53894b7380e6241aba332
