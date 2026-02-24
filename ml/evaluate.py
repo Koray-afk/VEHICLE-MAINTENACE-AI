@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a08bcb3 (add model evaluation and comparison report)
 import pandas as pd
 import numpy as np
 from sklearn.metrics import (accuracy_score, precision_score, recall_score,
@@ -113,6 +116,7 @@ if __name__ == "__main__":
     save_report([lr_result, dt_result], report_path)
     
     
+<<<<<<< HEAD
 =======
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 import pandas as pd
@@ -147,3 +151,5 @@ def get_feature_importance(model, feature_names):
         return dict(zip(feature_names, importances))
     return None
 >>>>>>> c868f44e5d3ee6b6cfa53894b7380e6241aba332
+=======
+>>>>>>> a08bcb3 (add model evaluation and comparison report)

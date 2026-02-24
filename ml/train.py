@@ -92,6 +92,7 @@ if __name__ == "__main__":
     print(f"Logistic Regression - Test Accuracy: {lr_test_acc:.4f}")
     print(f"Decision Tree       - Test Accuracy: {dt_test_acc:.4f}")
 
+<<<<<<< HEAD
 =======
 =======
 from sklearn.linear_model import LogisticRegression
@@ -120,3 +121,5 @@ def train_models(X_train, y_train, preprocessor):
     return trained_pipelines
 >>>>>>> 34144b8 (train the model)
 >>>>>>> c868f44e5d3ee6b6cfa53894b7380e6241aba332
+=======
+>>>>>>> a08bcb3 (add model evaluation and comparison report)
