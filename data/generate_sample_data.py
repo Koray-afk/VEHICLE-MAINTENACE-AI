@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+<<<<<<< HEAD
 import random
 from datetime import datetime, timedelta
 import os
@@ -115,3 +116,36 @@ if __name__ == "__main__":
     print(f"Shape: {df.shape}")
     print(f"\nClass distribution:")
     print(df['Need_Maintenance'].value_counts())
+=======
+
+def generate_data(n_samples=500):
+    np.random.seed(42)
+    
+    data = {
+        'vehicle_id': [f'V-{1000+i}' for i in range(n_samples)],
+        'mileage': np.random.randint(5000, 150000, n_samples),
+        'engine_hours': np.random.uniform(100, 5000, n_samples),
+        'fault_code_count': np.random.randint(0, 15, n_samples),
+        'last_service_days': np.random.randint(10, 365, n_samples),
+        'temperature_avg': np.random.uniform(70, 110, n_samples),
+    }
+    
+    # Logic for target 'maintenance_required'
+    # More likely to require maintenance if:
+    # mileage > 100k OR fault_codes > 5 OR last_service > 200 days
+    df = pd.DataFrame(data)
+    
+    prob = (
+        (df['mileage'] / 150000) * 0.4 + 
+        (df['fault_code_count'] / 15) * 0.3 + 
+        (df['last_service_days'] / 365) * 0.3
+    )
+    
+    df['maintenance_required'] = (prob > 0.5).astype(int)
+    
+    df.to_csv('/Users/viru/Desktop/projects/vehicle-maintenance-ai/data/sample_vehicle_data.csv', index=False)
+    print(f"Sample data generated: /Users/viru/Desktop/projects/vehicle-maintenance-ai/data/sample_vehicle_data.csv")
+
+if __name__ == "__main__":
+    generate_data()
+>>>>>>> 34144b8 (train the model)

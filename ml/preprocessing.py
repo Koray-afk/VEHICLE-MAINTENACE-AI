@@ -1,4 +1,5 @@
 import pandas as pd
+<<<<<<< HEAD
 import numpy as np
 from sklearn.preprocessing import OrdinalEncoder, MinMaxScaler
 from sklearn.model_selection import train_test_split
@@ -61,3 +62,46 @@ if __name__ == "__main__":
     
     X_train, X_test, y_train, y_test = preprocess_pipeline(input_path, output_dir)
     print("\nPreprocessing complete!")
+=======
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+
+def get_preprocessing_pipeline(numeric_features, categorical_features):
+    """
+    Creates a scikit-learn preprocessing pipeline.
+    """
+    # Pipeline for numerical features: Impute missing with mean and scale
+    numeric_transformer = Pipeline(steps=[
+        ('imputer', SimpleImputer(strategy='mean')),
+        ('scaler', StandardScaler())
+    ])
+
+    # Pipeline for categorical features: Impute missing with 'missing' and One-Hot Encode
+    categorical_transformer = Pipeline(steps=[
+        ('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
+        ('onehot', OneHotEncoder(handle_unknown='ignore'))
+    ])
+
+    # Combine transformers into a ColumnTransformer
+    preprocessor = ColumnTransformer(
+        transformers=[
+            ('num', numeric_transformer, numeric_features),
+            ('cat', categorical_transformer, categorical_features)
+        ])
+
+    return preprocessor
+
+def preprocess_data(df, target_column='maintenance_required'):
+    """
+    Separates features and target, and identifies feature types.
+    """
+    X = df.drop(columns=[target_column, 'vehicle_id'], errors='ignore')
+    y = df[target_column]
+    
+    numeric_features = X.select_dtypes(include=['int64', 'float64']).columns.tolist()
+    categorical_features = X.select_dtypes(include=['object', 'category']).columns.tolist()
+    
+    return X, y, numeric_features, categorical_features
+>>>>>>> 34144b8 (train the model)

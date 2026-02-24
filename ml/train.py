@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LogisticRegression
@@ -53,3 +54,29 @@ if __name__ == "__main__":
     
     save_model(lr_model, os.path.join(models_dir, "logistic_regression.pkl"))
     
+=======
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.pipeline import Pipeline
+
+def train_models(X_train, y_train, preprocessor):
+    """
+    Trains Logistic Regression and Decision Tree models using the preprocessor.
+    """
+    models = {
+        "Logistic Regression": LogisticRegression(random_state=42, max_iter=1000),
+        "Decision Tree": DecisionTreeClassifier(random_state=42)
+    }
+    
+    trained_pipelines = {}
+    
+    for name, model in models.items():
+        pipeline = Pipeline(steps=[
+            ('preprocessor', preprocessor),
+            ('classifier', model)
+        ])
+        pipeline.fit(X_train, y_train)
+        trained_pipelines[name] = pipeline
+        
+    return trained_pipelines
+>>>>>>> 34144b8 (train the model)
