@@ -1,0 +1,22 @@
+{
+  "trained_at": "2026-02-26T21:09:04.330567",
+  "dataset_rows": 50000,
+  "train_rows": 40000,
+  "test_rows": 10000,
+  "deployed_model": "LogisticRegression",
+  "sklearn_version": "1.8.0",
+  "logistic_regression": {
+    "train_accuracy": 0.9514,
+    "test_accuracy": 0.9511,
+    "precision": 0.9680798619669707,
+    "recall": 0.9715522572665429,
+    "f1": 0.9698129514167542
+  },
+  "decision_tree": {
+    "train_accuracy": 1.0,
+    "test_accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+  }
+}
