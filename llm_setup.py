@@ -6,6 +6,9 @@ from dotenv import load_dotenv
 # Load environment variables (like GROQ_API_KEY or OPENAI_API_KEY)
 load_dotenv()
 
+import os
+api_key = os.getenv("GROQ_API_KEY")
+
 
 @lru_cache(maxsize=1)
 def get_llm():
