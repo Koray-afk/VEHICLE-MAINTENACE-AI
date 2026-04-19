@@ -1,11 +1,17 @@
 import os
 from functools import lru_cache
 
-from langchain_community.document_loaders import TextLoader
-from langchain_text_splitters import CharacterTextSplitter
-from langchain_community.embeddings.sentence_transformer import SentenceTransformerEmbeddings
-from langchain_community.vectorstores import Chroma
 from langchain_core.documents import Document
+
+try:
+    from langchain_community.document_loaders import TextLoader
+    from langchain_text_splitters import CharacterTextSplitter
+    from langchain_community.embeddings.sentence_transformer import SentenceTransformerEmbeddings
+    from langchain_community.vectorstores import Chroma
+    CHROMA_AVAILABLE = True
+except ImportError:
+    CHROMA_AVAILABLE = False
+
 
 # Paths
 DATA_PATH = "data/maintenance_guidelines.txt"
@@ -73,8 +79,12 @@ def initialize_vector_store():
 def get_retriever():
     """
     Returns the retriever interface for the vector store.
-    Attempts to load from disk first, if not found, initializes it.
+    Falls back to keyword-based retriever when ChromaDB/sentence-transformers
+    are not installed (e.g. on Streamlit Cloud).
     """
+    if not CHROMA_AVAILABLE:
+        return KeywordRetriever(DEFAULT_GUIDELINES)
+
     if os.path.exists(CHROMA_DB_DIR):
         try:
             embedding_function = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
@@ -84,11 +94,11 @@ def get_retriever():
             pass
 
     if os.path.exists(DATA_PATH):
-        embedding_function = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
         db = initialize_vector_store()
         return db.as_retriever(search_kwargs={"k": 2})
 
     return KeywordRetriever(DEFAULT_GUIDELINES)
+
 
 if __name__ == "__main__":
     # Test script for Member 2

@@ -2,11 +2,12 @@ import os
 from functools import lru_cache
 
 from dotenv import load_dotenv
-from langchain_groq import ChatGroq
-from langchain_openai import ChatOpenAI
 
 # Load environment variables (like GROQ_API_KEY or OPENAI_API_KEY)
 load_dotenv()
+
+import os
+api_key = os.getenv("GROQ_API_KEY")
 
 
 @lru_cache(maxsize=1)
@@ -19,6 +20,8 @@ def get_llm():
     openai_api_key = os.getenv("OPENAI_API_KEY")
 
     if groq_api_key:
+        from langchain_groq import ChatGroq
+
         return ChatGroq(
             api_key=groq_api_key,
             model=os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile"),
@@ -26,6 +29,8 @@ def get_llm():
         )
 
     if openai_api_key:
+        from langchain_openai import ChatOpenAI
+
         return ChatOpenAI(
             api_key=openai_api_key,
             model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),

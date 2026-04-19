@@ -16,8 +16,10 @@ try:
     from agent import fleet_graph, health_report_graph, run_chat_agent, schedule_graph
 
     AGENT_AVAILABLE = True
-except Exception:
+    AGENT_IMPORT_ERROR = ""
+except Exception as exc:
     AGENT_AVAILABLE = False
+    AGENT_IMPORT_ERROR = str(exc)
 
 
 st.set_page_config(page_title="Vehicle Maintenance AI", layout="wide", page_icon="🚗")
@@ -728,6 +730,8 @@ def render_fleet_dashboard() -> None:
 
     if not AGENT_AVAILABLE:
         st.warning("AI features not available. Install requirements to enable fleet analysis.")
+        if AGENT_IMPORT_ERROR:
+            st.caption(f"Import error: {AGENT_IMPORT_ERROR}")
         return
 
     fleet_stats = {
@@ -807,6 +811,8 @@ with ai_copilot_tab:
 
     if not AGENT_AVAILABLE:
         st.warning("AI agent modules are not available. Install dependencies and check imports.")
+        if AGENT_IMPORT_ERROR:
+            st.caption(f"Import error: {AGENT_IMPORT_ERROR}")
     elif st.session_state.get("risk_score") is None or st.session_state.get("vehicle_data") is None:
         st.info("Run a prediction in the Single Vehicle tab first to activate AI Copilot with vehicle context.")
     else:
