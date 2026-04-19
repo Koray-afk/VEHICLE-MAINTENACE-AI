@@ -15,4 +15,5 @@ langgraph
 chromadb
 sentence-transformers
 langchain-groq
+langchain-openai
 python-dotenv
