@@ -97,6 +97,13 @@ To clean the raw data and generate a fresh `vehicle_maintenance_cleaned.csv`:
 python train.py
 ```
 
+### Build the Vector Store
+To generate the local Chroma index used by the retriever:
+```bash
+python build_chroma_db.py
+```
+This creates `data/chroma_db/` from `data/maintenance_guidelines.txt` when available, or from the built-in fallback guidelines if the file is missing.
+
 ### Experimentation
 Explore the training logic or test new models via Jupyter:
 ```bash
